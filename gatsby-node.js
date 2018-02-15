@@ -11,15 +11,7 @@ const createNodeHelpers = require('gatsby-node-helpers').default
 
 const closedOrders = 'output.json/orders/2/8/';
 
-const oauthParams = {
-    baseUrl: 'https://api.cardmarket.com/ws/v2.0/',
-    appToken: '4z6JOHFFMmOtB2XI',
-    appSecret: 'kmJ9eN0gmsbfW7iZWsJqELMfePgt6aSX',
-    accessToken: 'MxFvCXznhFp0dbiNLo7PJdMPCin8YOnX',
-    accessSecret: 'pg5L011d289ZKNt4C6a97enY15mb7qs8',
-    signatureMethod: 'HMAC-SHA1',
-    version: '1.0'
-};
+const oauthParams = require('./creds.json')
 
 exports.sourceNodes = async ({ boundActionCreators }) => {
     const { createNode } = boundActionCreators;

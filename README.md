@@ -3,11 +3,13 @@ List all your bought and received [Magic](https://magic.wizards.com) trading car
 
 ## Clone
 ```
-git clone
+git clone https://github.com/sabralod/mtgEquity.git
 ```
 
 ## Setup
 ```
+cd ./mtgEquity
+npm install
 ```
 
 ## Run
