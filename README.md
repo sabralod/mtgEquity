@@ -7,6 +7,7 @@ git clone https://github.com/sabralod/mtgEquity.git
 ```
 
 ## Setup
+You have to copy the ```creds.json``` file to the mtgEquity directory.
 ```
 cd ./mtgEquity
 npm install
