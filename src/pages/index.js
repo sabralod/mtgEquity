@@ -17,7 +17,7 @@ export default IndexPage
 
 export const pageQuery = graphql`
 query IndexQuery {
-  allMtgOrder{
+  allMtgBuyer{
     edges {
       node {
         state{

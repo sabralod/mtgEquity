@@ -3,31 +3,36 @@
  *
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
-
 const _ = require('lodash')
 const OAuth = require('oauth');
 const fetch = require('isomorphic-fetch');
 const createNodeHelpers = require('gatsby-node-helpers').default
 
-const closedOrders = 'output.json/orders/2/8/';
+const outputType = 'output.json';
 
 const oauthParams = require('./creds.json')
 
 exports.sourceNodes = async ({ boundActionCreators }) => {
     const { createNode } = boundActionCreators;
-    const data = await getData();
+    const orders = await getData('buyer', 'received');
 
-    data.forEach(order => {
+    orders.forEach(order => {
         createNode(order);
     });
+
+    // const sells = await getData('seller', 'received');
+
+    // sells.forEach(sell => {        
+    //     createNode(sell);
+    // });
 
     return;
 };
 
-function getData() {
+function getData(actor, state) {
     return new Promise(function (resolve, reject) {
         var result = [];
-        getPage(1, result, function (err, results) {
+        getPage(actor, state, 1, result, function (err, results) {
             if (err) {
                 reject(err);
             } else {
@@ -38,9 +43,9 @@ function getData() {
                 } = createNodeHelpers({
                     typePrefix: `mtg`
                 });
-
-                const OrderNode = createNodeFactory('order', node => {
-                    node.id = generateNodeId("order", node.idOrder)
+                
+                const OrderNode = createNodeFactory(actor, node => {
+                    node.id = generateNodeId(actor, node.idOrder)
                     return node;
                 });
 
@@ -53,10 +58,10 @@ function getData() {
     });
 }
 
-function getPage(paging, result, callback) {
-    var url = oauthParams.baseUrl + closedOrders + paging.toString();
+function getPage(actor, state, paging, result, callback) {
+    var url = oauthParams.baseUrl + '/' + outputType + '/orders/' + actor + '/' + state + '/' + paging.toString();
     var header = authHeader(url, oauthParams);
-
+    // console.log("\nCalling mkm api with " + url + "\n\n" + header + "\n");
     return fetch(
         url, {
             method: 'GET',
@@ -68,24 +73,20 @@ function getPage(paging, result, callback) {
         var contentType = response.headers.get("content-type");
         var status = response.status;
         if (contentType && contentType.includes("application/json")) {
+            
             response.json().then(function (res) {
-                _(res).forEach(orders => {
-                    _(orders).forEach(order => {
-                        result.push(order);
-                    });
-                });
+                const orders = _.values(_.get(res, 'order'));
+                
+                result.push(orders);
             });
         }
-
         if (status && status == '206') {
             console.log('status: ' + status + ' paging: ' + paging.toString());
-
             paging = paging + 100;
-            getPage(paging, result, callback);
+            getPage(actor, state, paging, result, callback);
         } else {
-            callback(null, result)
+            callback(null, result);
         }
-
     });
 }
 
