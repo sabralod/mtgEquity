@@ -24,46 +24,24 @@ exports.sourceNodes = async ({ boundActionCreators }) => {
 };
 
 function getData() {
+    return new Promise(function (resolve, reject) {
+        fetchData('buyer', 'received').then(function (buyer) {
+            console.log("\n\nBuyer size: " + _.size(buyer));
 
-    Promise.resolve(fetchData('buyer', 'received')).then(function(buyer) {
-        console.log("\n\n\n");
-        console.log(_.sample(buyer));
-        console.log("\n\n\n");
-        
+            fetchData('seller', 'received').then(function (seller) {
+                var result = [];
+                buyer.forEach(obj => {
+                    result.push(obj);
+                });
+                seller.forEach(obj => {
+                    result.push(obj);
+                });
+
+                resolve(result);
+            });
+        });
     });
-
-    // return new Promise(function(resolve, reject) {
-    //     fetchData('buyer', 'received').then(function(buyer) {
-    //         console.log("\n\nBuyer size: "+_.size(buyer));
-            
-    //         fetchData('seller', 'received').then(function(seller) {
-    //             var result = [];
-    //             buyer.forEach(obj => {
-    //                 result.push(obj);
-    //             });
-    //             seller.forEach(obj => {
-    //                 result.push(obj);
-    //             });
-                
-    //             resolve(result);
-    //         });
-    //     });
-        // var result = [];
-
-        // fetchData('buyer', 'received').then(function(buyer) {
-        //     buyer.forEach(obj => {
-        //         result.push(obj);
-        //     });
-        // });
-        // fetchData('seller', 'received').then(function(seller) {
-        //     seller.forEach(obj => {
-        //         result.push(obj);
-        //     });
-        // });
-        // resolve(result);
-
-    // });
-};
+}
 
 function fetchData(actor, state) {
     return new Promise(function (resolve, reject) {
@@ -79,7 +57,7 @@ function fetchData(actor, state) {
                 } = createNodeHelpers({
                     typePrefix: `mtg`
                 });
-                
+
                 const OrderNode = createNodeFactory(actor, node => {
                     node.id = generateNodeId(actor, node.idOrder)
                     return node;
@@ -95,8 +73,8 @@ function fetchData(actor, state) {
 };
 
 function getPage(actor, state, paging, result, callback) {
-    var url = oauthParams.baseUrl + '/' + outputType + '/orders/' + actor + '/' + state + '/' + paging.toString();
-    var header = authHeader(url, oauthParams);
+    const url = oauthParams.baseUrl + '/' + outputType + '/orders/' + actor + '/' + state + '/' + paging.toString();
+    const header = authHeader(url, oauthParams);
     // console.log("\nCalling mkm api with " + url + "\n\n" + header + "\n");
     return fetch(
         url, {
@@ -106,8 +84,8 @@ function getPage(actor, state, paging, result, callback) {
             }
         }
     ).then(function (response) {
-        var contentType = response.headers.get("content-type");
-        var status = response.status;
+        const contentType = response.headers.get("content-type");
+        const status = response.status;
         if (contentType && contentType.includes("application/json")) {
             response.json().then(function (res) {
                 const orders = res.order;
@@ -126,7 +104,7 @@ function getPage(actor, state, paging, result, callback) {
                 }
             });
         }
-        
+
     });
 };
 
