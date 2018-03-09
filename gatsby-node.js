@@ -14,22 +14,58 @@ const oauthParams = require('./creds.json')
 
 exports.sourceNodes = async ({ boundActionCreators }) => {
     const { createNode } = boundActionCreators;
-    const orders = await getData('buyer', 'received');
+    const nodes = await getData();
 
-    orders.forEach(order => {
-        createNode(order);
+    nodes.forEach(node => {
+        createNode(node);
     });
-
-    // const sells = await getData('seller', 'received');
-
-    // sells.forEach(sell => {        
-    //     createNode(sell);
-    // });
 
     return;
 };
 
-function getData(actor, state) {
+function getData() {
+
+    Promise.resolve(fetchData('buyer', 'received')).then(function(buyer) {
+        console.log("\n\n\n");
+        console.log(_.sample(buyer));
+        console.log("\n\n\n");
+        
+    });
+
+    // return new Promise(function(resolve, reject) {
+    //     fetchData('buyer', 'received').then(function(buyer) {
+    //         console.log("\n\nBuyer size: "+_.size(buyer));
+            
+    //         fetchData('seller', 'received').then(function(seller) {
+    //             var result = [];
+    //             buyer.forEach(obj => {
+    //                 result.push(obj);
+    //             });
+    //             seller.forEach(obj => {
+    //                 result.push(obj);
+    //             });
+                
+    //             resolve(result);
+    //         });
+    //     });
+        // var result = [];
+
+        // fetchData('buyer', 'received').then(function(buyer) {
+        //     buyer.forEach(obj => {
+        //         result.push(obj);
+        //     });
+        // });
+        // fetchData('seller', 'received').then(function(seller) {
+        //     seller.forEach(obj => {
+        //         result.push(obj);
+        //     });
+        // });
+        // resolve(result);
+
+    // });
+};
+
+function fetchData(actor, state) {
     return new Promise(function (resolve, reject) {
         var result = [];
         getPage(actor, state, 1, result, function (err, results) {
@@ -50,13 +86,13 @@ function getData(actor, state) {
                 });
 
                 const i = _(results).size();
-                console.log("\nSize: " + i);
+                console.log("\nNode Factory Size: " + i);
 
                 resolve(results.map(OrderNode));
             }
         });
     });
-}
+};
 
 function getPage(actor, state, paging, result, callback) {
     var url = oauthParams.baseUrl + '/' + outputType + '/orders/' + actor + '/' + state + '/' + paging.toString();
@@ -73,22 +109,26 @@ function getPage(actor, state, paging, result, callback) {
         var contentType = response.headers.get("content-type");
         var status = response.status;
         if (contentType && contentType.includes("application/json")) {
-            
             response.json().then(function (res) {
-                const orders = _.values(_.get(res, 'order'));
-                
-                result.push(orders);
+                const orders = res.order;
+
+                orders.forEach(order => {
+                    result.push(order);
+                });
+            }).then(() => {
+                if (status && status === '206') {
+                    console.log('\nstatus: ' + status + ' paging: ' + paging.toString());
+                    paging = paging + 100;
+                    getPage(actor, state, paging, result, callback);
+                } else {
+                    console.log('\nstatus: ' + status);
+                    callback(null, result);
+                }
             });
         }
-        if (status && status == '206') {
-            console.log('status: ' + status + ' paging: ' + paging.toString());
-            paging = paging + 100;
-            getPage(actor, state, paging, result, callback);
-        } else {
-            callback(null, result);
-        }
+        
     });
-}
+};
 
 function authHeader(url, params) {
     var oauth = new OAuth.OAuthEcho(
