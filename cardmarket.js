@@ -4,12 +4,14 @@ const fetch = require('isomorphic-fetch');
 const createNodeHelpers = require('gatsby-node-helpers').default;
 const oauthParams = require('./creds.json');
 const outputType = 'output.json';
+const uuid = require('uuid/v4');
 
 exports.loadData = function loadData() {
     return new Promise(function (resolve, reject) {
         var mappedData = [];
         var data = [];
-        loadCardmarketData('buyer', 'received', 1, data).then(function () {
+        loadCardmarketData('buyer', 'received', 1, data).then(
+            function () {
             const {
                 createNodeFactory,
                 generateNodeId,
@@ -18,14 +20,32 @@ exports.loadData = function loadData() {
                 typePrefix: `mtg`
             });
 
-            const OrderNode = createNodeFactory('buyer', node => {
-                node.id = generateNodeId('buyer', node.idOrder)
+            const ArticleNode = createNodeFactory('article', node => {
+                node.id = generateNodeId('article', uuid());
                 return node;
             });
+            var articles = [];
+            data.forEach(order => {
+                order.article.forEach(article => {
+                    articles.push({
+                        name: article.product.enName,
+                        isBuyer: order.isBuyer,
+                        language: article.language,
+                        price: article.price,
+                        count: article.count,
+                        isFoil: article.isFoil,
+                        isSigned: article.isSigned,
+                        isPlayset: article.isPlayset,
+                        isAltered: article.isAltered,
+                        dateReceived: order.state.dateReceived,
+                        dateBought: order.state.dateBought
+                    });
+                });
+            });
 
-            const i = _(data).size();
+            const i = _(articles).size();
             console.log("\nNode Factory Size: " + i);
-            mappedData = data.map(OrderNode);
+            mappedData = articles.map(ArticleNode);
         }).then(() => {
             data = [];
             return loadCardmarketData('seller', 'received', 1, data);
@@ -38,18 +58,44 @@ exports.loadData = function loadData() {
                 typePrefix: `mtg`
             });
 
-            const OrderNode = createNodeFactory('seller', node => {
-                node.id = generateNodeId('seller', node.idOrder)
+            // const OrderNode = createNodeFactory('seller', node => {
+            //     node.id = generateNodeId('seller', node.idOrder)
+            //     return node;
+            // });
+
+            // const i = _(data).size();
+            // console.log("\nNode Factory Size: " + i);
+            // const concatArray = mappedData.concat(data.map(OrderNode));
+            // const j = _(concatArray).size();
+            // console.log("\concatArray Factory Size: " + j);
+
+            const ArticleNode = createNodeFactory('article', node => {
+                node.id = generateNodeId('article', uuid());
                 return node;
             });
+            var articles = [];
+            data.forEach(order => {
+                order.article.forEach(article => {
+                    articles.push({
+                        name: article.product.enName,
+                        isBuyer: order.isBuyer,
+                        language: article.language,
+                        price: article.price,
+                        count: article.count,
+                        isFoil: article.isFoil,
+                        isSigned: article.isSigned,
+                        isPlayset: article.isPlayset,
+                        isAltered: article.isAltered,
+                        dateReceived: order.state.dateReceived,
+                        dateBought: order.state.dateBought
+                    });
+                });
+            });
 
-            const i = _(data).size();
+            const i = _(articles).size();
             console.log("\nNode Factory Size: " + i);
-            const concatArray = mappedData.concat(data.map(OrderNode));
-            const j = _(concatArray).size();
-            console.log("\concatArray Factory Size: " + j);
-            
-            resolve(mappedData.concat(data.map(OrderNode)));
+            mappedData = mappedData.concat( articles.map(ArticleNode));
+            resolve(mappedData);
         });
 
     });

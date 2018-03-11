@@ -1,39 +1,44 @@
-import React from 'react'
-import Link from 'gatsby-link'
-import get from 'lodash/get'
-import _ from 'lodash'
-import Articles from '../components/Articles/Articles'
+import graphql from 'graphql-tag';
+import Helmet from 'react-helmet';
+import React from 'react';
+import Stock from '../components/Stock/Stock';
 
-class IndexPage extends React.Component {
-  render() {
-    const orderEdges = get(this, 'props.data.allMtgOrder.edges');
-    return (
-      <Articles orderEdges={orderEdges} />
-    )
-  }
-}
+const App = ({ data: { allMtgArticle, site, siteSearchIndex } }) => (
+  <div>
+    <Helmet
+      title={`${site.siteMetadata.title}`}
+    />
+    {
+      console.log(siteSearchIndex)
+    }
+    <div>
+      <Stock
+        edges={allMtgArticle.edges}
+        searchData={siteSearchIndex}
+      />
+    </div>
+    <div>{}</div>
+  </div>
+);
+export default App;
 
-export default IndexPage
-
-export const pageQuery = graphql`
-query IndexQuery {
-  allMtgBuyer{
-    edges {
-      node {
-        state{
-          dateReceived
+export const query = graphql`
+  query IndexPageQuery {
+    site {
+      siteMetadata {
+        title
+      }
+    }
+    siteSearchIndex {
+      index
+    }
+    allMtgArticle {
+      edges {
+        node {
+          id
+          name
         }
-        article{
-          product{
-            enName
-            image
-          }
-          price
-          count
-        }
-        totalValue
       }
     }
   }
-}
-`
+`;
