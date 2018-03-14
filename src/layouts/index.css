@@ -7,16 +7,28 @@ img {
   max-width: 150px;
 }
 
-.article-container {
-  display: flex;
-  padding: 5px;
+.search {
+  max-width: 480px;
+  margin: 8px;
 }
 
-.article-img {
-  padding: 5px;
+.search input {
+  font-family: inherit;
+  font-size: 100%;
 }
 
-.article-desc {
-  display: block;
-  padding: 5px;
+.stock {
+  margin: 8px;
+}
+
+.stockListItem {
+  padding: 12px;
+}
+
+.stockListItem-buyer {
+  background: lightgreen;
+}
+
+.stockListItem-seller {
+  background: lightcoral;
 }

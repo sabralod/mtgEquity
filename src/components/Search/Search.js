@@ -47,9 +47,7 @@ export default class Search extends Component {
 
     if (!this.index) this.createIndex();    
     const hits = this.index.search(query);
-
-    // const tmp = hits.map(({ ref }) => this.index.documentStore.getDoc(ref));
-    // console.log(tmp);
+    // console.log(hits);
     
     return hits.map(({ ref }) => this.index.documentStore.getDoc(ref));
   }
@@ -58,7 +56,7 @@ export default class Search extends Component {
     const { query, hits } = this.state;
 
     return (
-      <div role="search">
+      <div role="search" className="search">
         <input
           onChange={this.updateQuery}
           placeholder="search"

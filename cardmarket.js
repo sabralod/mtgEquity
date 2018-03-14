@@ -21,7 +21,7 @@ exports.loadData = function loadData() {
             });
 
             const ArticleNode = createNodeFactory('article', node => {
-                node.id = generateNodeId('article', uuid());
+                node.id = uuid();
                 return node;
             });
             var articles = [];
@@ -30,7 +30,7 @@ exports.loadData = function loadData() {
                     articles.push({
                         name: article.product.enName,
                         isBuyer: order.isBuyer,
-                        language: article.language,
+                        language: article.language.languageName,
                         price: article.price,
                         count: article.count,
                         isFoil: article.isFoil,
@@ -38,7 +38,9 @@ exports.loadData = function loadData() {
                         isPlayset: article.isPlayset,
                         isAltered: article.isAltered,
                         dateReceived: order.state.dateReceived,
-                        dateBought: order.state.dateBought
+                        dateBought: order.state.dateBought,
+                        image: article.product.image,
+                        condition: article.condition
                     });
                 });
             });
@@ -58,19 +60,8 @@ exports.loadData = function loadData() {
                 typePrefix: `mtg`
             });
 
-            // const OrderNode = createNodeFactory('seller', node => {
-            //     node.id = generateNodeId('seller', node.idOrder)
-            //     return node;
-            // });
-
-            // const i = _(data).size();
-            // console.log("\nNode Factory Size: " + i);
-            // const concatArray = mappedData.concat(data.map(OrderNode));
-            // const j = _(concatArray).size();
-            // console.log("\concatArray Factory Size: " + j);
-
             const ArticleNode = createNodeFactory('article', node => {
-                node.id = generateNodeId('article', uuid());
+                node.id = uuid();
                 return node;
             });
             var articles = [];
@@ -79,7 +70,7 @@ exports.loadData = function loadData() {
                     articles.push({
                         name: article.product.enName,
                         isBuyer: order.isBuyer,
-                        language: article.language,
+                        language: article.language.languageName,
                         price: article.price,
                         count: article.count,
                         isFoil: article.isFoil,
@@ -87,7 +78,9 @@ exports.loadData = function loadData() {
                         isPlayset: article.isPlayset,
                         isAltered: article.isAltered,
                         dateReceived: order.state.dateReceived,
-                        dateBought: order.state.dateBought
+                        dateBought: order.state.dateBought,
+                        image: article.product.image,
+                        condition: article.condition
                     });
                 });
             });

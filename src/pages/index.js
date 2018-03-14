@@ -8,9 +8,6 @@ const App = ({ data: { allMtgArticle, site, siteSearchIndex } }) => (
     <Helmet
       title={`${site.siteMetadata.title}`}
     />
-    {
-      console.log(siteSearchIndex)
-    }
     <div>
       <Stock
         edges={allMtgArticle.edges}
@@ -37,6 +34,18 @@ export const query = graphql`
         node {
           id
           name
+          isBuyer
+          language
+          price
+          count
+          isFoil
+          isSigned
+          isPlayset
+          isAltered
+          dateReceived
+          dateBought
+          image
+          condition
         }
       }
     }
