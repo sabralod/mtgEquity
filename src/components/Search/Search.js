@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import qs from 'qs';
 import React, { Component } from 'react';
 import { Index } from 'elasticlunr';
+import { Input } from "semantic-ui-react";
+
 
 const getSearch = ({ location }) => {
   if (!location) return '';
@@ -38,17 +40,17 @@ export default class Search extends Component {
     };
   }
 
-  createIndex() {    
+  createIndex() {
     this.index = Index.load(this.props.data.index);
   }
 
   getHits(query) {
     if (!query) return [];
 
-    if (!this.index) this.createIndex();    
+    if (!this.index) this.createIndex();
     const hits = this.index.search(query);
     // console.log(hits);
-    
+
     return hits.map(({ ref }) => this.index.documentStore.getDoc(ref));
   }
 
@@ -56,17 +58,18 @@ export default class Search extends Component {
     const { query, hits } = this.state;
 
     return (
-      <div role="search" className="search">
-        <input
-          onChange={this.updateQuery}
-          placeholder="search"
-          style={{
-            width: '100%',
-          }}
-          type="search"
-          value={query}
-        />
-      </div>
+      <Input
+        focus
+        size="massive"
+        icon="search"
+        onChange={this.updateQuery}
+        placeholder="search"
+        style={{
+          width: '100%',
+        }}
+        type="search"
+        value={query}
+      />
     );
   }
 }

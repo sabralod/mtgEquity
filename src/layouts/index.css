@@ -7,16 +7,6 @@ img {
   max-width: 150px;
 }
 
-.search {
-  max-width: 480px;
-  margin: 8px;
-}
-
-.search input {
-  font-family: inherit;
-  font-size: 100%;
-}
-
 .stock {
   margin: 8px;
 }

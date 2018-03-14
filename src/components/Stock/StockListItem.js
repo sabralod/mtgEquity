@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Card from '../Card/Card';
 
+
 class StockListItem extends Component {
 	constructor(...rest) {
 		super(...rest);

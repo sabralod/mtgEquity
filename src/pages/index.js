@@ -8,13 +8,10 @@ const App = ({ data: { allMtgArticle, site, siteSearchIndex } }) => (
     <Helmet
       title={`${site.siteMetadata.title}`}
     />
-    <div>
-      <Stock
-        edges={allMtgArticle.edges}
-        searchData={siteSearchIndex}
-      />
-    </div>
-    <div>{}</div>
+    <Stock
+      edges={allMtgArticle.edges}
+      searchData={siteSearchIndex}
+    />
   </div>
 );
 export default App;

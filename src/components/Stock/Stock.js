@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Search from '../Search/Search';
 import StockListItem from './StockListItem';
+import { Image, Item } from 'semantic-ui-react';
+import Card from '../Card/Card';
 
 class Stock extends Component {
 	constructor(...rest) {
@@ -23,19 +25,20 @@ class Stock extends Component {
 						})
 					}
 				/>
-				<div>
+				<Item.Group>
 					{edges
 						.filter(
 							({ node }) =>
 								!hits || hits.filter(hit => hit.id === node.id).length > 0,
 					)
 						.map(({ node }, index) => (
-							<StockListItem
-								key={node.id}
-								node={node}
-							/>
+							<Card node={node} />
+							// <StockListItem
+							// 	key={node.id}
+							// 	node={node}
+							// />
 						))}
-				</div>
+				</Item.Group>
 			</div>
 		);
 	}
