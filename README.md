@@ -14,8 +14,13 @@ npm install --save
 ```
 
 ## Run
+Run with [gatsby cli](https://www.npmjs.com/package/gatsby-cli).
 ```
 gatsby develop
+```
+Run with npm
+```
+npm run develop
 ```
 
 ## Problems
