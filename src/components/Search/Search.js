@@ -60,7 +60,7 @@ export default class Search extends Component {
     return (
       <Input
         focus
-        size="massive"
+        size="big"
         icon="search"
         onChange={this.updateQuery}
         placeholder="search"

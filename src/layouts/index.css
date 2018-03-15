@@ -2,23 +2,3 @@ html {
   font-family: sans-serif;
   height: 100%;
 }
-
-img {
-  max-width: 150px;
-}
-
-.stock {
-  margin: 8px;
-}
-
-.stockListItem {
-  padding: 12px;
-}
-
-.stockListItem-buyer {
-  background: lightgreen;
-}
-
-.stockListItem-seller {
-  background: lightcoral;
-}

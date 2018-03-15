@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Search from '../Search/Search';
-import StockListItem from './StockListItem';
-import { Image, Item } from 'semantic-ui-react';
+import { Item, Segment } from 'semantic-ui-react';
 import Card from '../Card/Card';
 
 class Stock extends Component {
@@ -11,12 +10,13 @@ class Stock extends Component {
 			hits: null,
 		};
 	}
+	
 	render() {
 		const { edges, searchData } = this.props;
 		const { hits } = this.state;
 
 		return (
-			<div className="stock">
+			<div>
 				<Search
 					data={searchData}
 					onSearch={(text, hits) =>
@@ -26,18 +26,14 @@ class Stock extends Component {
 					}
 				/>
 				<Item.Group>
-					{edges
-						.filter(
+					{
+						edges.filter(
 							({ node }) =>
 								!hits || hits.filter(hit => hit.id === node.id).length > 0,
-					)
-						.map(({ node }, index) => (
-							<Card node={node} />
-							// <StockListItem
-							// 	key={node.id}
-							// 	node={node}
-							// />
-						))}
+						).map(({ node }, index) => (
+							<Card key={index} node={node} />
+						))
+					}
 				</Item.Group>
 			</div>
 		);

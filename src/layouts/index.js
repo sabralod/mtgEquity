@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
-
+import Link from 'gatsby-link'
 import Header from '../components/Header'
+
 import './index.css'
 import 'semantic-ui-css/semantic.min.css'
 
@@ -16,7 +17,7 @@ const TemplateWrapper = ({ children }) => (
         { name: 'keywords', content: 'magic the gathering, mtg, equity' },
       ]}
     />
-    <Header />
+    <Header/>
     <div
       style={{
         margin: '0 auto',

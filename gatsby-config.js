@@ -9,12 +9,12 @@ module.exports = {
       options: {
         // Fields to index
         fields: [
-          'name',
+          'name'
         ],
         // How to resolve each field's value for a supported node type
         resolvers: {
           MtgArticle: {
-            name: node => node.name,
+            name: node => node.name
           }
         },
       },

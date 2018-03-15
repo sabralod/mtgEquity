@@ -2,11 +2,15 @@ import graphql from 'graphql-tag';
 import Helmet from 'react-helmet';
 import React from 'react';
 import Stock from '../components/Stock/Stock';
+import Analysis from '../components/Analysis/Analysis'
 
 const App = ({ data: { allMtgArticle, site, siteSearchIndex } }) => (
   <div>
     <Helmet
       title={`${site.siteMetadata.title}`}
+    />
+    <Analysis
+      edges={allMtgArticle.edges}
     />
     <Stock
       edges={allMtgArticle.edges}
@@ -43,6 +47,9 @@ export const query = graphql`
           dateBought
           image
           condition
+          condition
+          expansion
+          rarity
         }
       }
     }

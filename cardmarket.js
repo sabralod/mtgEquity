@@ -6,6 +6,10 @@ const oauthParams = require('./creds.json');
 const outputType = 'output.json';
 const uuid = require('uuid/v4');
 
+if (oauthParams) {
+	console.log('No creds.json');
+}
+
 exports.loadData = function loadData() {
     return new Promise(function (resolve, reject) {
         var mappedData = [];
@@ -40,7 +44,9 @@ exports.loadData = function loadData() {
                         dateReceived: order.state.dateReceived,
                         dateBought: order.state.dateBought,
                         image: article.product.image,
-                        condition: article.condition
+                        condition: article.condition,
+                        expansion: article.product.expansion,
+                        rarity: article.product.rarity
                     });
                 });
             });
@@ -80,7 +86,9 @@ exports.loadData = function loadData() {
                         dateReceived: order.state.dateReceived,
                         dateBought: order.state.dateBought,
                         image: article.product.image,
-                        condition: article.condition
+                        condition: article.condition,
+                        expansion: article.product.expansion,
+                        rarity: article.product.rarity
                     });
                 });
             });
