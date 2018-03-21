@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Link from 'gatsby-link';
-import { Image } from 'semantic-ui-react'
+import { Image } from 'semantic-ui-react';
+import banner from './banner.png';
 
 
 class Header extends Component {
@@ -16,7 +17,7 @@ class Header extends Component {
         paddingTop: 0,
       }}>
         <Link to='/'>
-          <Image src='../static/banner.png' fluid />
+          <Image src={banner} fluid />
         </Link>
       </div>
     )
